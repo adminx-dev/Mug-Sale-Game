@@ -89,8 +89,10 @@
         score += 10;
         return "The merchant says: Alright, you can have it for $10!";
       } else if (userMessage.toLowerCase().includes("offer") || userMessage.toLowerCase().includes("price")) {
+        score += 5;
         return responses[Math.floor(Math.random() * responses.length)];
       } else {
+        score -= 5;
         return "The merchant says: Sorry, I can't do that.";
       }
     }
