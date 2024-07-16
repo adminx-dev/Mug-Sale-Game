@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mug Merchant Game</title>
+</head>
+<body>
+  <h1>Mug Merchant Game</h1>
+  <p>Convince the merchant to sell the Mug for $100.</p>
+  <div id="conversation"></div>
+  <input type="text" id="input" placeholder="Type your message here">
+  <div>Score: <span id="score">0</span></div>
+  <script src="https://cdn.jsdelivr.net/npm/wizard-orpheus@1.0.0/dist/wizard-orpheus.min.js"></script>
+  <script>
+    var myGame = new WizardOrpheus('', `
+      You are trying to convince a merchant to sell you a Mug for $100. The merchant is stubborn and wants $200.
+    `);
+
+    myGame.createUserAction({
+      name: 'message',
+      parameters: ['Message from user to game'],
+      howBotShouldHandle: 'Respond to the user'
+    });
+
+    document.getElementById('input').addEventListener('keyup', function(e) {
+      if (e.code == 'Enter') {
+        let userInput = document.getElementById('input').value;
+        myGame.message(userInput);
+        document.getElementById('conversation').innerHTML += '<p>' + userInput + '</p>';
+        document.getElementById('input').value = '';
+      }
+    });
+
+    myGame.botAction('respond', 'Send a text response to the user', { message: 'What you want to say to the user' }, data => {
+      document.getElementById('conversation').innerHTML += '<p>' + data.message + '</p>';
+      document.getElementById('score').innerHTML = data.currentVariables.score.value;
+    });
+
+    myGame.variable('score', 'Current score. Changes (positive and negatively) as the user does things.', 0);
+  </script>
+</body>
+</html>
